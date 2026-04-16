@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Метеостанція</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+}
+
+.card {
+  background: #1e293b;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 15px;
+}
+
+canvas {
+  max-width: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📊 Метеостанція</h1>
+
+<div class="card">
+  <h2 id="temp">🌡 -- °C</h2>
+</div>
+
+<div class="card">
+  <canvas id="chart"></canvas>
+</div>
+
+<button onclick="addData()">➕ Додати точку</button>
+
+<script>
+let tg = window.Telegram.WebApp;
+tg.expand();
+
+// дані
+let temps = [22, 23, 24];
+let labels = ["1", "2", "3"];
+
+// графік
+const ctx = document.getElementById('chart').getContext('2d');
+
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Температура °C',
+      data: temps,
+      borderColor: 'cyan',
+      tension: 0.3
+    }]
+  }
+});
+
+// додавання нової точки (ПОКИ ТЕСТ)
+function addData() {
+  let newTemp = Math.floor(Math.random() * 5) + 22;
+
+  temps.push(newTemp);
+  labels.push(labels.length + 1);
+
+  chart.update();
+
+  document.getElementById("temp").innerText = "🌡 " + newTemp + " °C";
+}
+</script>
+
+</body>
+</html>
